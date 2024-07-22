@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Searching page</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/library/books/search}" th:object="${book}">
+
+    <label for="name">Enter the book for searching: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <br/>
+    <input type="submit" value="Search">
+</form>
+<br/>
+
+<div th:if="${books != null}">
+    <div th:each="book : ${books}">
+        <a th:text="${book.name + ', ' + book.author + ', ' + book.year}">book</a>
+        <div th:if="${book.person == null}">
+            <p th:text="'Book now is free'"></p>
+            <hr/>
+        </div>
+        <div th:if="${book.person != null}">
+            <p th:text="'Book now in use of : ' + ${book.person.fullName}"></p>
+            <hr/>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Show book page</title>
+</head>
+<body>
+
+<p th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear()}">
+<div th:if="${booked_person == null}">
+    This book is free. Who should take it?
+    <form th:method="POST" th:action="@{/library/books/{id}/edit(id=${book.getId()})}">
+        <label for="person">Choose person: </label>
+        <select id="person" name="personId">
+            <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}"></option>
+        </select>
+        <input type="submit" value="Give book">
+    </form>
+</div>
+<br/>
+<div th:if="${booked_person != null}">
+    <p th:text="${'Book now in use of : ' + booked_person.getFullName()}">
+    <form th:method="POST" th:action="@{/library/books/delete/{id}(id=${book.getId()})}">
+        <input type="submit" value="Release the book">
+    </form>
+</div>
+<br/>
+<hr/>
+<a th:href="@{/library/books/{id}/edit(id=${book.getId()})}">Edit</a>
+<form th:method="POST" th:action="@{/library/books/real_delete/{id}(id=${book.getId()})}">
+    <input type="submit" value="Delete">
+    <div style="color:red" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">Global errors</div>
+</form>
+</body>
+</html>
